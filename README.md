@@ -3,7 +3,4 @@ This repository presents our fake news classification project, developed for a d
 
 ## Overview
 
-HERANet (Hierarchical LSTM-based Representation Network) is a fake news detection model designed to classify news articles as real or fake.  
-The model splits each article into chunks, encodes them through a hierarchical LSTM structure, and aggregates the resulting representations into a document-level vector.  
-To better capture the most informative parts of each article, HERANet incorporates an attention pooling mechanism that assigns higher weights to important segments.  
-This repository summarizes our motivation, model design, training strategy, and experimental results from a deep learning hackathon project in which our team achieved 2nd place.
+HERANet (Hierarchical LSTM-based Representation Network) is a fake news detection model designed to classify news articles as real or fake. The model splits each article into chunks, encodes them through a hierarchical LSTM structure, and aggregates the resulting representations into a document-level vector.  To better capture the most informative parts of each article, HERANet incorporates an attention pooling mechanism that assigns higher weights to important segments. This repository summarizes our motivation, model design, training strategy, and experimental results from a deep learning hackathon project in which our team achieved 2nd place.
