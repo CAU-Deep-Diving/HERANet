@@ -1,4 +1,4 @@
-# DeepLearning_Hackton(최우수상)
+# HERANET(최우수상)
 
 ## Overview
 
