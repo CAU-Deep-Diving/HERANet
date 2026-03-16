@@ -9,3 +9,10 @@ To enhance its ability to capture important information, HERANet employs **atten
 Through this design, the model can reflect both **local contextual information** and **global document structure**.  
 
 This repository summarizes our **motivation**, **model architecture**, **training strategy**, and **experimental results** from a **deep learning hackathon project** in which our team won **2nd place**.
+
+## Hackathon Information
+
+- **Host:** CAU SW Education Institute  
+- **Date:** October 1, 2025  
+- **Task:** Fake News Classification  
+- **Constraint:** The use of **pretrained tokenizers** was not allowed
