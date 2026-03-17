@@ -144,7 +144,7 @@ class HierBiLSTM(nn.Module):
 # (1) domain data는 문서의 유형을 알려줘서 학습을 돕는 것
 # (2) meta data는 문서 길이, 댓글 수 등을 알려줘서 학습을 돕는 것
 # -----------------------------
-class Monster(nn.Module):
+class HERANet(nn.Module):
     def __init__(self, vocab_size: int, num_classes: int = 2, embedding_dim: int = 128,
                  padding_idx: int = 0, chunk_size: int = 256, chunk_stride: int = 224,
                  token_hidden: int = 128, token_layers: int = 1, sent_hidden: int = 128,
