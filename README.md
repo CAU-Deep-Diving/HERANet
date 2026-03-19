@@ -98,3 +98,99 @@ Label imbalance is present, especially in the short-text dataset.
 Because pretrained tokenizers were not allowed, all tokenization and vocabulary construction had to be performed from scratch.
 
 These characteristics motivated us to design a model that is both structurally efficient and capable of learning useful representations under constrained settings.
+
+## Modeling Approach
+
+To address fake news classification under the constraint that pretrained tokenizers were not allowed, we designed **HERANet**, a **hierarchical BiLSTM-based architecture** with **attention pooling**.  
+The main idea is to process a document at two levels:
+
+1. **Token level**: encode each chunk of text to capture local contextual information  
+2. **Chunk level**: aggregate chunk representations to capture global document structure  
+
+This hierarchical design allows the model to handle long news articles more effectively than a flat sequence encoder.
+
+### Model Architecture
+
+<p align="center">
+  <img src="./assets/heranet_architecture.png" alt="HERANet Architecture" width="100%">
+</p>
+
+<p align="center">
+  <em>Overview of HERANet: a hierarchical BiLSTM architecture with attention pooling for fake news classification.</em>
+</p>
+
+### Step-by-Step Pipeline
+
+#### 1. Text Input and Token Embedding
+
+Each news article is first tokenized using a custom tokenizer built from scratch.  
+Since pretrained tokenizers were not allowed in the competition, all vocabulary construction and token indexing were performed manually.
+
+The input tokens are then mapped into dense vector representations through a trainable **token embedding layer**.
+
+#### 2. Chunking
+
+Because news articles can be long, directly feeding the entire sequence into a single recurrent model is inefficient and may weaken long-range information flow.  
+To address this, each document is divided into multiple **chunks** of fixed length.
+
+This chunking strategy makes the model more scalable and enables hierarchical document modeling.
+
+#### 3. Token-Level BiLSTM Encoder
+
+Each chunk is independently processed by a **Bidirectional LSTM (BiLSTM)** at the token level.  
+This allows the model to capture contextual dependencies in both forward and backward directions within each chunk.
+
+As a result, each token is transformed into a contextualized hidden state.
+
+#### 4. Token-Level Attention Pooling
+
+Not all words contribute equally to fake news detection.  
+Therefore, after obtaining token-level hidden states, we apply **attention pooling** to compute a weighted sum of the token representations.
+
+This produces a single **chunk representation** for each chunk, while allowing the model to focus on the most informative words.
+
+#### 5. Chunk-Level BiLSTM Encoder
+
+The sequence of chunk representations is then passed to another **BiLSTM**, this time at the **chunk level**.  
+This layer models relationships across chunks and captures higher-level discourse flow and document structure.
+
+In other words, while the token-level BiLSTM captures local semantics, the chunk-level BiLSTM captures global context.
+
+#### 6. Chunk-Level Attention Pooling
+
+After chunk-level encoding, we again apply **attention pooling** over the sequence of chunk representations.  
+This step allows the model to identify which parts of the document are most important for classification.
+
+The resulting weighted representation becomes the final **document embedding**.
+
+#### 7. Classification
+
+The document embedding is passed through **dropout** for regularization and then fed into a **linear classifier** to predict whether the article is **fake** or **real**.
+
+### Why Hierarchical BiLSTM?
+
+A flat text encoder may struggle when handling long news articles because important evidence can be distributed across multiple parts of the document.  
+By contrast, the hierarchical structure in HERANet offers the following advantages:
+
+- it captures both **local token-level context** and **global document-level structure**
+- it is more suitable for **long-form news articles**
+- it reduces the difficulty of modeling extremely long token sequences at once
+- it enables more interpretable aggregation through **attention pooling**
+
+### Why Attention Pooling?
+
+Attention pooling is used at both the token level and the chunk level because the importance of textual units is not uniform.  
+Some words or chunks contain stronger signals for fake news detection than others.
+
+By assigning larger weights to more informative tokens and chunks, the model can build a more discriminative document representation.
+
+### Summary
+
+In summary, HERANet is a **two-stage hierarchical encoder**:
+
+- **Token-level BiLSTM + Attention Pooling** to generate chunk representations
+- **Chunk-level BiLSTM + Attention Pooling** to generate a document representation
+- **Dropout + Linear Classifier** for final fake/real prediction
+
+This architecture is particularly effective for long and structured news documents, while still remaining lightweight enough to operate without pretrained language models.
+
