@@ -112,7 +112,7 @@ This hierarchical design allows the model to handle long news articles more effe
 ### Model Architecture
 
 <p align="center">
-  <img src="./assets/heranet_architecture.png" alt="HERANet Architecture" width="100%">
+  <img src="./assets/heranet_architecture.svg" alt="HERANet Architecture" width="100%">
 </p>
 
 <p align="center">
